@@ -1,7 +1,6 @@
 function load_servers(servers, config)
-	local capabilities = require('cmp_nvim_lsp').default_capabilities()
 	for _, server_name in pairs(servers) do
-		config[server_name].setup({capabilities = capabilities})
+		config[server_name].setup({capabilities = require('cmp_nvim_lsp').default_capabilities()})
 	end
 end
 
