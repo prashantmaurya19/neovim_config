@@ -2,25 +2,8 @@ return {
 	"nvim-tree/nvim-web-devicons",
 	{
 		"https://github.com/tpope/vim-commentary",
-		config = function()
-			vim.api.nvim_create_autocmd("FileType", {
-				desc = "set indent for dart files",
-				callback = function(opts)
-					local forward_slash_comment_filext = {
-						dart = true,
-						lisp = true,
-					}
-					local hash_comment_filext = {
-						text = true,
-					}
-					if forward_slash_comment_filext[vim.bo[opts.buf].filetype] then
-						vim.opt_local.commentstring = "//%s"
-					elseif hash_comment_filext[vim.bo[opts.buf].filetype] then
-						vim.opt_local.commentstring = "#%s"
-					end
-				end,
-			})
-		end,
+		-- config = function()
+		-- end,
 	},
 	"ryanoasis/vim-devicons",
 	{

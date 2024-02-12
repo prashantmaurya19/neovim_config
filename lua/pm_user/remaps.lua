@@ -20,4 +20,5 @@ keyset("n", "<leader>a", vim.lsp.buf.code_action, {})
 keyset("n", "<S-l>", function()
 	vim.diagnostic.open_float(nil, { focus = false })
 end, {})
+keyset({"n","i"}, "<C-p>",vim.lsp.buf.signature_help, {})
 

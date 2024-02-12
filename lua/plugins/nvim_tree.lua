@@ -24,6 +24,7 @@ local function my_on_attach(bufnr)
 	keyset('n',"<A-h>",":tabmove-1<CR>",{noremap = true, silent = true,buffer=bufnr})
 	keyset('n',"<A-k>",":tabmove+1<CR>",{noremap = true, silent = true,buffer=bufnr})
 end
+
 return {
 	"nvim-tree/nvim-tree.lua",
 	version = "*",
@@ -41,7 +42,6 @@ return {
 			disable_netrw = true,
 			hijack_netrw = true,
 			on_attach = my_on_attach,
-			-- auto_close = true,
 			open_on_tab = false,
 			hijack_cursor = true,
 			update_cwd = true,
