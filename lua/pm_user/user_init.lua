@@ -7,7 +7,25 @@ vim.opt.termguicolors = true
 
 --globals
 vim.g.pm_lsp_servers_list = { "lua_ls","pyright", "rust_analyzer", "eslint"}
+vim.g.pm_shiftwidth= {
+	lisp = 4,
+	dart = 2
+}
+vim.g.pm_forward_slash_comment_filext = {
+	dart = true,
+	lisp = true,
+}
+vim.g.pm_hash_comment_filext = {
+	text = true,
+}
 
+vim.g.pm_cmp_menu_icon = {
+	-- nvim_lsp = "NLSP",
+	nvim_lua = "NLUA",
+	luasnip = "LSNP",
+	buffer = "BUFF",
+	path = "PATH",
+}
 
 vim.diagnostic.config({
 	virtual_text = false,
@@ -43,3 +61,8 @@ vim.g.nvim_tree_icons = {
 		symlink_open = "",
 	},
 }
+
+-- -- if you only want these mappings for toggle term use term://*toggleterm#* instead
+-- vim.cmd('autocmd! TermOpen term://* lua vim.g.set_terminal_keymaps()')
+vim.cmd("command Z w | qa")
+vim.cmd("cabbrev wqa Z")

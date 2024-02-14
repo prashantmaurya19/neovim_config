@@ -1,4 +1,3 @@
-
 local keyset = vim.keymap.set
 
 keyset({"n","i"},"<leader>l",function() require("conform").format() end,{noremap = true, silent = true,})
