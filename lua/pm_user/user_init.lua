@@ -4,9 +4,8 @@ vim.opt.encoding = "UTF-8"
 vim.opt.cursorline = true
 
 vim.opt.termguicolors = true
-
 --globals
-vim.g.pm_lsp_servers_list = { "lua_ls","pyright", "rust_analyzer", "eslint"}
+vim.g.pm_lsp_servers_list = { "lua_ls","pylyzer", "rust_analyzer", "eslint"}
 vim.g.pm_shiftwidth= {
 	lisp = 4,
 	dart = 2
@@ -62,7 +61,6 @@ vim.g.nvim_tree_icons = {
 	},
 }
 
--- -- if you only want these mappings for toggle term use term://*toggleterm#* instead
--- vim.cmd('autocmd! TermOpen term://* lua vim.g.set_terminal_keymaps()')
+-- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd("command Z w | qa")
 vim.cmd("cabbrev wqa Z")

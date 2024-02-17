@@ -1,4 +1,3 @@
--- require("test")
 local line_ok, feline = pcall(require, "feline")
 if not line_ok then
 	return
@@ -53,14 +52,14 @@ local c = {
 			}
 		end,
 		left_sep = "block",
-		right_sep = {
-			str = "right_filled",
-			hl = {
-
-				bg = "orange_bright",
-				fg = "black",
-			},
-		},
+		right_sep = function()
+			return {
+				str = "right_filled",
+				hl = {
+					fg = require("feline.providers.vi_mode").get_mode_color(),
+				},
+			}
+		end,
 	},
 	gitBranch = {
 		provider = "git_branch",
@@ -72,33 +71,6 @@ local c = {
 		left_sep = "block",
 		right_sep = "block",
 	},
-	gitDiffAdded = {
-		provider = "git_diff_added",
-		hl = {
-			bg = "green",
-			fg = "white",
-		},
-		left_sep = "block",
-		right_sep = "block",
-	},
-	gitDiffRemoved = {
-		provider = "git_diff_removed",
-		hl = {
-			bg = "red",
-			fg = "black",
-		},
-		left_sep = "block",
-		right_sep = "block",
-	},
-	gitDiffChanged = {
-		provider = "git_diff_changed",
-		hl = {
-			bg = "black_bright",
-			fg = "white",
-		},
-		left_sep = "block",
-		right_sep = "right_filled",
-	},
 	separator = {
 		provider = "",
 		hl = {
@@ -108,12 +80,6 @@ local c = {
 		},
 	},
 	fileinfo = {
-		-- provider = {
-		-- 	name = "file_info",
-		-- 	opts = {
-		-- 		type = "relative-short",
-		-- 	},
-		-- },
 		provider = "get_filename",
 		hl = {
 			bg = "dark_blue",
@@ -137,25 +103,11 @@ local c = {
 			fg = "dim",
 		},
 	},
-	diagnostic_hints = {
-		provider = "diagnostic_hints",
-		hl = {
-			bg = "orange",
-			fg = "dim",
-		},
-	},
-	diagnostic_info = {
-		provider = "diagnostic_info",
-		hl = {
-			bg = "white",
-			fg = "dim",
-		},
-	},
 	lsp_client_names = {
 		provider = "lsp_client_names",
 		hl = {
 			fg = "dark_blue",
-			bg = "red_bright",
+			bg = "dark_cyan",
 			style = "bold",
 		},
 		left_sep = "left_filled",
@@ -177,31 +129,6 @@ local c = {
 		left_sep = "block",
 		right_sep = "block",
 	},
-	file_encoding = {
-		provider = "file_encoding",
-		hl = {
-			fg = "white",
-			bg = "dark_cyan",
-		},
-	},
-	position = {
-		provider = "position",
-		hl = {
-			fg = "dark_blue",
-			bg = "green_bright",
-			style = "bold",
-		},
-		left_sep = "block",
-		right_sep = "block",
-	},
-	line_percentage = {
-		provider = "line_percentage",
-		hl = {
-			fg = "black",
-			bg = "aqua",
-			style = "bold",
-		},
-	},
 	error_lnum = {
 		provider = "diagnostic_error_lnum",
 		hl = {
@@ -218,10 +145,6 @@ local c = {
 			fg = "orange_bright",
 		},
 	},
-	-- lsp_encoding = {
-	-- 	provider = "lsp_client_offset_encoding",
-	-- 	left_sep = "  ",
-	-- }
 }
 
 function extract_bg(component)
@@ -363,17 +286,9 @@ feline.setup({
 				filename = vim.fn.fnamemodify(filename, ":~:.")
 			end
 			if require("myfs").is_current_buf_modified() then
-				filename = vim.fn.fnamemodify(filename, ":~:.")..' ●'
+				filename = vim.fn.fnamemodify(filename, ":~:.") .. " ●"
 			end
 			return filename
 		end,
-
-		-- lsp_client_offset_encoding = function()
-		-- 	local clients = {}
-		-- 	for _, client in pairs(vim.lsp.buf_get_clients(0)) do
-		-- 		clients[#clients + 1] = client.name .. ": " .. client.offset_encoding
-		-- 	end
-		-- 	return table.concat(clients, ", "), "⚙️"
-		-- end,
 	},
 })

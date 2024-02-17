@@ -1,16 +1,26 @@
+
+local function keyargs(...)
+	local keyarg = {}
+	for _,value in ipairs(...) do
+		keyarg[value] = true
+	end
+	return keyarg
+end
+
 local keyset = vim.keymap.set
 
-keyset({"n","i"},"<leader>l",function() require("conform").format() end,{noremap = true, silent = true,})
-keyset('n',"<C-t>",":NvimTreeToggle<CR>",{noremap = true, silent = true,})
+keyset({"n","i"},"<leader>l",function() require("conform").format() end,keyargs{"noremap","silent"})
+keyset('n',"<C-t>",":NvimTreeToggle<CR>",keyargs{"noremap","silent"})
 
-keyset('n',"<C-k>",":tabnext<CR>",{noremap = true, silent = true,})
-keyset('n',"<C-h>",":tabprevious<CR>",{noremap = true, silent = true,})
-keyset('n',"<C-x>",":tabclose<CR>",{noremap = true, silent = true,})
+keyset({"n","i"},"<A-n>",":tabnew<CR>",keyargs{"noremap","silent"})
+keyset('n',"<C-k>",":tabnext<CR>",keyargs{"noremap","silent"})
+keyset('n',"<C-h>",":tabprevious<CR>",keyargs{"noremap","silent"})
+keyset('n',"<C-x>",":tabclose<CR>",keyargs{"noremap","silent"})
 keyset('n',"<C-d>","<C-d>zz")
 keyset('n',"<C-u>","<C-u>zz")
 
-keyset('n',"<A-h>",":tabmove-1<CR>",{noremap = true, silent = true,})
-keyset('n',"<A-k>",":tabmove+1<CR>",{noremap = true, silent = true,})
+keyset('n',"<A-h>",":tabmove-1<CR>",keyargs{"noremap","silent"})
+keyset('n',"<A-k>",":tabmove+1<CR>",keyargs{"noremap","silent"})
 
 
 --lsp-keybinding

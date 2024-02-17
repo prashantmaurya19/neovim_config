@@ -36,83 +36,26 @@ local vi_mode_colors = {
 
 local c = {
 	vim_mode = {
-		provider = {
-			name = "vi_mode",
-			opts = {
-				show_mode_name = true,
-				-- padding = "center", -- Uncomment for extra padding.
-			},
-		},
+		provider = "vim_mode_provide",
 		hl = function()
 			return {
-				fg = require("feline.providers.vi_mode").get_mode_color(),
-				bg = "black",
+				bg = require("feline.providers.vi_mode").get_mode_color(),
+				fg = "black",
 				style = "bold",
 				name = "NeovimModeHLColor",
 			}
 		end,
-		left_sep = "block",
-		right_sep = {
-			str = "right_filled",
-			hl = {
-
-				bg = "orange_bright",
-				fg = "black",
-			},
-		},
-	},
-	gitBranch = {
-		provider = "git_branch",
-		hl = {
-			bg = "orange_bright",
-			fg = "black",
-			style = "bold",
-		},
-		left_sep = "block",
-		right_sep = "block",
-	},
-	gitDiffAdded = {
-		provider = "git_diff_added",
-		hl = {
-			bg = "green",
-			fg = "white",
-		},
-		left_sep = "block",
-		right_sep = "block",
-	},
-	gitDiffRemoved = {
-		provider = "git_diff_removed",
-		hl = {
-			bg = "red",
-			fg = "black",
-		},
-		left_sep = "block",
-		right_sep = "block",
-	},
-	gitDiffChanged = {
-		provider = "git_diff_changed",
-		hl = {
-			bg = "black_bright",
-			fg = "white",
-		},
-		left_sep = "block",
-		right_sep = "right_filled",
-	},
-	separator = {
-		provider = "",
-		hl = {
-			bg = "white",
-			fg = "black",
-			style = "bold",
-		},
+		right_sep = function()
+			return {
+				str = "right_filled",
+				hl = {
+					bg = "dark_blue",
+					fg = require("feline.providers.vi_mode").get_mode_color(),
+				},
+			}
+		end,
 	},
 	fileinfo = {
-		-- provider = {
-		-- 	name = "file_info",
-		-- 	opts = {
-		-- 		type = "relative-short",
-		-- 	},
-		-- },
 		provider = "get_filename",
 		hl = {
 			bg = "dark_blue",
@@ -125,36 +68,20 @@ local c = {
 	diagnostic_errors = {
 		provider = "diagnostic_errors",
 		hl = {
-			bg = "red",
-			fg = "dim",
+			fg = "red",
 		},
 	},
 	diagnostic_warnings = {
 		provider = "diagnostic_warnings",
 		hl = {
-			bg = "yellow",
-			fg = "dim",
-		},
-	},
-	diagnostic_hints = {
-		provider = "diagnostic_hints",
-		hl = {
-			bg = "orange",
-			fg = "dim",
-		},
-	},
-	diagnostic_info = {
-		provider = "diagnostic_info",
-		hl = {
-			bg = "white",
-			fg = "dim",
+			fg = "yellow",
 		},
 	},
 	lsp_client_names = {
 		provider = "lsp_client_names",
 		hl = {
-			fg = "dark_blue",
-			bg = "red_bright",
+			fg = "white",
+			bg = "cyan",
 			style = "bold",
 		},
 		left_sep = "left_filled",
@@ -176,31 +103,6 @@ local c = {
 		left_sep = "block",
 		right_sep = "block",
 	},
-	file_encoding = {
-		provider = "file_encoding",
-		hl = {
-			fg = "white",
-			bg = "dark_cyan",
-		},
-	},
-	position = {
-		provider = "position",
-		hl = {
-			fg = "dark_blue",
-			bg = "green_bright",
-			style = "bold",
-		},
-		left_sep = "block",
-		right_sep = "block",
-	},
-	line_percentage = {
-		provider = "line_percentage",
-		hl = {
-			fg = "black",
-			bg = "aqua",
-			style = "bold",
-		},
-	},
 	error_lnum = {
 		provider = "diagnostic_error_lnum",
 		hl = {
@@ -214,16 +116,12 @@ local c = {
 	lsp_process = {
 		provider = "lsp_progress",
 		hl = {
-			fg = "orange_bright",
+			fg = "red_bright",
 		},
 	},
-	-- lsp_encoding = {
-	-- 	provider = "lsp_client_offset_encoding",
-	-- 	left_sep = "  ",
-	-- }
 }
 
-function extract_bg(component)
+local function extract_bg(component)
 	if component == nil then
 		return nil
 	elseif type(component.hl) == "function" then
@@ -235,7 +133,7 @@ function extract_bg(component)
 	end
 end
 
-function create_color_maping(palate, direction)
+local function create_color_maping(palate, direction)
 	local new_colors = {}
 	for i, v in pairs(palate) do
 		table.insert(new_colors, i, {
@@ -246,7 +144,7 @@ function create_color_maping(palate, direction)
 	return new_colors
 end
 
-function right2leftsepalign(component, color, sty)
+local function right2leftsepalign(component, color, sty)
 	component.right_sep = "block"
 	component.hl.bg = color.back
 	component.left_sep = {
@@ -258,7 +156,7 @@ function right2leftsepalign(component, color, sty)
 		always_visible = true,
 	}
 end
-function left2rightsepalign(component, color, sty)
+local function left2rightsepalign(component, color, sty)
 	component.left_sep = "block"
 	component.hl.bg = color.back
 	component.right_sep = {
@@ -271,7 +169,7 @@ function left2rightsepalign(component, color, sty)
 	}
 end
 
-function sepAlignHelper(aligner_fun, color, component, style)
+local function sepAlignHelper(aligner_fun, color, component, style)
 	if type(component.hl) ~= "table" then
 		return
 	end
@@ -282,7 +180,7 @@ function sepAlignHelper(aligner_fun, color, component, style)
 	aligner_fun(component, color, sty)
 end
 
-local sepAlign = function(aligner, colors, row, style)
+local function sepAlign(aligner, colors, row, style)
 	local new_colors = colors
 	for i, v in pairs(row) do
 		sepAlignHelper(aligner, new_colors[i], v, style)
@@ -291,29 +189,20 @@ end
 
 local left = {
 	c.vim_mode,
-	c.gitBranch,
-	c.gitDiffAdded,
-	c.gitDiffRemoved,
-	c.gitDiffChanged,
 	c.fileinfo,
 }
-sepAlign(left2rightsepalign, create_color_maping(left, 1), left, "slant_right")
+sepAlign(left2rightsepalign, create_color_maping(left, 1), left, "right_filled")
 
 local middle = {
-	-- c.diagnostic_errors,
-	-- c.diagnostic_warnings,
-	-- c.diagnostic_info,
-	-- c.diagnostic_hints,
 	c.lsp_process,
+	c.diagnostic_errors,
+	c.diagnostic_warnings,
 }
 
 local right = {
 	c.lsp_client_names,
 	c.file_type,
-	c.file_encoding,
-	c.position,
 	c.error_lnum,
-	c.line_percentage,
 }
 sepAlign(right2leftsepalign, create_color_maping(right, -1), right, "left_filled")
 
@@ -337,15 +226,9 @@ feline.setup({
 
 		lsp_progress = function(components, opts)
 			local lsp_message = require("pm_user.util.lsp").lsp_process()
-			if table.getn(vim.lsp.buf_get_clients()) < 1 then
-				components.hl.fg = "red"
-				return "[no_lsp!]"
-			end
 			if lsp_message ~= "" then
-				components.hl.fg = "yellow"
 				return lsp_message
 			end
-			components.hl.fg = "green"
 			return "lsp ok!"
 		end,
 
@@ -363,17 +246,12 @@ feline.setup({
 				filename = vim.fn.fnamemodify(filename, ":~:.")
 			end
 			if require("pm_user.util.file").is_current_buf_modified() then
-				filename = vim.fn.fnamemodify(filename, ":~:.")..' ●'
+				filename = vim.fn.fnamemodify(filename, ":~:.") .. " ●"
 			end
 			return filename
 		end,
-
-		-- lsp_client_offset_encoding = function()
-		-- 	local clients = {}
-		-- 	for _, client in pairs(vim.lsp.buf_get_clients(0)) do
-		-- 		clients[#clients + 1] = client.name .. ": " .. client.offset_encoding
-		-- 	end
-		-- 	return table.concat(clients, ", "), "⚙️"
-		-- end,
+		vim_mode_provide = function()
+			return "  "
+		end,
 	},
 })
