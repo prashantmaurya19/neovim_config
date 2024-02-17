@@ -1,6 +1,72 @@
 local line_ok, feline = pcall(require, "feline")
 if not line_ok then
+	vim.inspect("feline")
 	return
+end
+local function extract_bg(component)
+	if component == nil then
+		return nil
+	elseif type(component.hl) == "function" then
+		return "black"
+	elseif type(component.hl) == "table" then
+		return component.hl.bg
+	else
+		return nil
+	end
+end
+
+local function create_color_maping(palate, direction)
+	local new_colors = {}
+	for i, v in pairs(palate) do
+		table.insert(new_colors, i, {
+			front = extract_bg(palate[i + direction]),
+			back = extract_bg(v),
+		})
+	end
+	return new_colors
+end
+
+local function right2leftsepalign(component, color, sty)
+	component.right_sep = "block"
+	component.hl.bg = color.back
+	component.left_sep = {
+		str = sty,
+		hl = {
+			fg = color.back,
+			bg = color.front,
+		},
+		always_visible = true,
+	}
+end
+local function left2rightsepalign(component, color, sty)
+	component.left_sep = "block"
+	component.hl.bg = color.back
+	component.right_sep = {
+		str = sty,
+		hl = {
+			fg = color.back,
+			bg = color.front,
+		},
+		always_visible = true,
+	}
+end
+
+local function sepAlignHelper(aligner_fun, color, component, style)
+	if type(component.hl) ~= "table" then
+		return
+	end
+	local sty = "block"
+	if style then
+		sty = style
+	end
+	aligner_fun(component, color, sty)
+end
+
+local function sepAlign(aligner, colors, row, style)
+	local new_colors = colors
+	for i, v in pairs(row) do
+		sepAlignHelper(aligner, new_colors[i], v, style)
+	end
 end
 
 local punk_dark = {
@@ -80,27 +146,11 @@ local c = {
 	lsp_client_names = {
 		provider = "lsp_client_names",
 		hl = {
-			fg = "white",
-			bg = "cyan",
+			fg = "cyan",
+			bg = "dark_cyan",
 			style = "bold",
 		},
 		left_sep = "left_filled",
-		right_sep = "block",
-	},
-	file_type = {
-		provider = {
-			name = "file_type",
-			opts = {
-				filetype_icon = true,
-				case = "titlecase",
-			},
-		},
-		hl = {
-			fg = "yellow",
-			bg = "black",
-			style = "bold",
-		},
-		left_sep = "block",
 		right_sep = "block",
 	},
 	error_lnum = {
@@ -121,71 +171,6 @@ local c = {
 	},
 }
 
-local function extract_bg(component)
-	if component == nil then
-		return nil
-	elseif type(component.hl) == "function" then
-		return "black"
-	elseif type(component.hl) == "table" then
-		return component.hl.bg
-	else
-		return nil
-	end
-end
-
-local function create_color_maping(palate, direction)
-	local new_colors = {}
-	for i, v in pairs(palate) do
-		table.insert(new_colors, i, {
-			front = extract_bg(palate[i + direction]),
-			back = extract_bg(v),
-		})
-	end
-	return new_colors
-end
-
-local function right2leftsepalign(component, color, sty)
-	component.right_sep = "block"
-	component.hl.bg = color.back
-	component.left_sep = {
-		str = sty,
-		hl = {
-			fg = color.back,
-			bg = color.front,
-		},
-		always_visible = true,
-	}
-end
-local function left2rightsepalign(component, color, sty)
-	component.left_sep = "block"
-	component.hl.bg = color.back
-	component.right_sep = {
-		str = sty,
-		hl = {
-			fg = color.back,
-			bg = color.front,
-		},
-		always_visible = true,
-	}
-end
-
-local function sepAlignHelper(aligner_fun, color, component, style)
-	if type(component.hl) ~= "table" then
-		return
-	end
-	local sty = "block"
-	if style then
-		sty = style
-	end
-	aligner_fun(component, color, sty)
-end
-
-local function sepAlign(aligner, colors, row, style)
-	local new_colors = colors
-	for i, v in pairs(row) do
-		sepAlignHelper(aligner, new_colors[i], v, style)
-	end
-end
 
 local left = {
 	c.vim_mode,
@@ -201,7 +186,6 @@ local middle = {
 
 local right = {
 	c.lsp_client_names,
-	c.file_type,
 	c.error_lnum,
 }
 sepAlign(right2leftsepalign, create_color_maping(right, -1), right, "left_filled")
@@ -251,7 +235,8 @@ feline.setup({
 			return filename
 		end,
 		vim_mode_provide = function()
-			return "  "
+			-- return "  "
+			return " "
 		end,
 	},
 })

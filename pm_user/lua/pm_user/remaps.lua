@@ -1,4 +1,3 @@
-
 local function keyargs(...)
 	local keyarg = {}
 	for _,value in ipairs(...) do
@@ -9,10 +8,10 @@ end
 
 local keyset = vim.keymap.set
 
-keyset({"n","i"},"<leader>l",function() require("conform").format() end,keyargs{"noremap","silent"})
+keyset("n","<leader>l",function() require("conform").format() end,keyargs{"noremap","silent"})
 keyset('n',"<C-t>",":NvimTreeToggle<CR>",keyargs{"noremap","silent"})
 
-keyset({"n","i"},"<A-n>",":tabnew<CR>",keyargs{"noremap","silent"})
+keyset("n","<A-n>",":tabnew<CR>",keyargs{"noremap","silent"})
 keyset('n',"<C-k>",":tabnext<CR>",keyargs{"noremap","silent"})
 keyset('n',"<C-h>",":tabprevious<CR>",keyargs{"noremap","silent"})
 keyset('n',"<C-x>",":tabclose<CR>",keyargs{"noremap","silent"})

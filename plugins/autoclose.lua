@@ -1,3 +1,0 @@
--- autoclose
-require("autoclose").setup()
-

@@ -1,10 +1,8 @@
 return {
-	"https://github.com/folke/tokyonight.nvim",
-	"kepano/flexoki-neovim",
-	"Mofiqul/dracula.nvim",
-	{ "pineapplegiant/spaceduck", branch = "main" },
-	{ "bluz71/vim-moonfly-colors", name = "moonfly" },
-	{"zootedb0t/citruszest.nvim",priority=1000,config=function() vim.cmd("colorscheme citruszest")
-	end},
-	-- {"pm_user.colorscheme",priority=999}
+	{priority=20000,"https://github.com/folke/tokyonight.nvim" },
+	{priority=20000,"kepano/flexoki-neovim" },
+	{priority=20000, "Mofiqul/dracula.nvim" },
+	{priority=20000, "pineapplegiant/spaceduck", branch = "main" },
+	{priority=20000, "bluz71/vim-moonfly-colors", name = "moonfly" },
+	{priority=20000, "zootedb0t/citruszest.nvim"},
 }
