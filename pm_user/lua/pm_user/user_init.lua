@@ -33,8 +33,9 @@ vim.diagnostic.config({
 })
 
 --nvim_tree config
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+-- vim.g.loaded_netrw = 1
+-- vim.g.loaded_netrwPlugin = 1
+-- vim.g.netrw_keepdir = 0
 
 vim.g.nvim_tree_icons = {
 	default = "",
@@ -64,3 +65,10 @@ vim.g.nvim_tree_icons = {
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd("command Z w | qa")
 vim.cmd("cabbrev wqa Z")
+
+
+--lsp_global_conf
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
+  vim.lsp.handlers.signature_help,
+  { focusable = false }
+)

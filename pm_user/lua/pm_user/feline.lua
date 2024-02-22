@@ -1,8 +1,3 @@
-local line_ok, feline = pcall(require, "feline")
-if not line_ok then
-	vim.inspect("feline")
-	return
-end
 local function extract_bg(component)
 	if component == nil then
 		return nil
@@ -69,37 +64,6 @@ local function sepAlign(aligner, colors, row, style)
 	end
 end
 
-local punk_dark = {
-	fg = "#BFBFBF",
-	bg = "#020101",
-	black = "#232323",
-	red = "#FF5454",
-	green = "#00CC7A",
-	yellow = "#FFD700",
-	orange = "#FF7431",
-	blue = "#00BFFF",
-	aqua = "#00FFFF",
-	dark_blue = "#131A24",
-	dark_cyan = "#010d0c",
-	red_bright = "#FF1A75",
-	green_bright = "#1AFFA3",
-	yellow_bright = "#FFFF00",
-	orange_bright = "#FFAA54",
-	blue_bright = "#28C9FF",
-	aqua_bright = "#33FFFF",
-	black_bright = "#767C77",
-}
-local vi_mode_colors = {
-	NORMAL = "green",
-	OP = "green",
-	INSERT = "yellow",
-	VISUAL = "purple",
-	LINES = "orange",
-	BLOCK = "red_bright",
-	REPLACE = "red",
-	COMMAND = "aqua",
-}
-
 local c = {
 	vim_mode = {
 		provider = "vim_mode_provide",
@@ -153,16 +117,6 @@ local c = {
 		left_sep = "left_filled",
 		right_sep = "block",
 	},
-	error_lnum = {
-		provider = "diagnostic_error_lnum",
-		hl = {
-			fg = "dark_cyan",
-			bg = "red",
-			style = "bold",
-		},
-		left_sep = "block",
-		right_sep = "block",
-	},
 	lsp_process = {
 		provider = "lsp_progress",
 		hl = {
@@ -171,12 +125,10 @@ local c = {
 	},
 }
 
-
 local left = {
 	c.vim_mode,
 	c.fileinfo,
 }
-sepAlign(left2rightsepalign, create_color_maping(left, 1), left, "right_filled")
 
 local middle = {
 	c.lsp_process,
@@ -186,41 +138,61 @@ local middle = {
 
 local right = {
 	c.lsp_client_names,
-	c.error_lnum,
 }
+
 sepAlign(right2leftsepalign, create_color_maping(right, -1), right, "left_filled")
+sepAlign(left2rightsepalign, create_color_maping(left, 1), left, "right_filled")
 
-local components = {
-	active = {
-		left,
-		middle,
-		right,
+return {
+	components = {
+		active = {
+			left,
+			middle,
+			right,
+		},
+		inactive = {
+			left,
+			middle,
+			right,
+		},
 	},
-	inactive = {
-		left,
-		middle,
-		right,
+	theme = {
+		fg = "#BFBFBF",
+		bg = "#020101",
+		black = "#232323",
+		red = "#FF5454",
+		green = "#00CC7A",
+		yellow = "#FFD700",
+		orange = "#FF7431",
+		blue = "#00BFFF",
+		aqua = "#00FFFF",
+		dark_blue = "#131A24",
+		dark_cyan = "#010d0c",
+		red_bright = "#FF1A75",
+		green_bright = "#1AFFA3",
+		yellow_bright = "#FFFF00",
+		orange_bright = "#FFAA54",
+		blue_bright = "#28C9FF",
+		aqua_bright = "#33FFFF",
+		black_bright = "#767C77",
 	},
-}
-feline.setup({
-	components = components,
-	theme = punk_dark,
-	vi_mode_colors = vi_mode_colors,
+	vi_mode_colors = {
+		NORMAL = "green",
+		OP = "green",
+		INSERT = "yellow",
+		VISUAL = "purple",
+		LINES = "orange",
+		BLOCK = "red_bright",
+		REPLACE = "red",
+		COMMAND = "aqua",
+	},
 	custom_providers = {
-
 		lsp_progress = function(components, opts)
 			local lsp_message = require("pm_user.util.lsp").lsp_process()
 			if lsp_message ~= "" then
 				return lsp_message
 			end
 			return "lsp ok!"
-		end,
-
-		diagnostic_error_lnum = function()
-			for i, v in pairs(vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })) do
-				return "E:" .. (v.end_lnum + 1)
-			end
-			return ""
 		end,
 		get_filename = function()
 			local filename = vim.api.nvim_buf_get_name(0)
@@ -235,8 +207,9 @@ feline.setup({
 			return filename
 		end,
 		vim_mode_provide = function()
-			-- return "  "
 			return " "
 		end,
 	},
-})
+}
+
+-- return M;

@@ -10,11 +10,4 @@ export.lsp_process = function()
 	end
 	return ""
 end
-
-
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-  vim.lsp.handlers.signature_help,
-  { focusable = false }
-)
-
 return export
