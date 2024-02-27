@@ -7,7 +7,10 @@ return {
 				formatters_by_ft = {
 					lua = { "stylua" },
 					python = { "isort" },
-					rust = {"rustfmt"}
+					rust = {"rustfmt"},
+					html = {"prettier"},
+					css = {"prettier"},
+					javascript = {"prettier"},
 				},
 			})
 		end

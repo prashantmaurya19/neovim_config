@@ -1,5 +1,16 @@
 local M = {}
 
+---@param join_sep string
+---@param strs table<string>
+---@return string
+function M.join(join_sep, strs)
+	local rnt = ""
+	for i, value in ipairs(strs) do
+		rnt = rnt .. value .. (#strs == i and "" or join_sep)
+	end
+	return rnt
+end
+
 function M.truncate(content, fixed_length)
 	-- Set 'fixed_length' to false if not provided.
 	fixed_length = fixed_length or false

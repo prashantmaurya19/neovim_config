@@ -1,11 +1,13 @@
 return {
 	"nvim-tree/nvim-web-devicons",
-	{
-		"https://github.com/tpope/vim-commentary",
-		-- config = function()
-		-- end,
-	},
+	"https://github.com/tpope/vim-commentary",
 	"ryanoasis/vim-devicons",
+	{
+		"j-hui/fidget.nvim",
+		config=function ()
+			require("fidget").setup()
+		end
+	},
 	{
 		"folke/lsp-colors.nvim",
 		config = function()
@@ -36,6 +38,19 @@ return {
 		requires = "kyazdani42/nvim-web-devicons",
 		config = function()
 			require("luatab").setup({})
+		end,
+	},
+
+	{
+		"https://github.com/NvChad/nvim-colorizer.lua",
+		config = function()
+			require("colorizer").setup({
+				user_default_options = {
+					tailwind = true, -- Enable tailwind colors
+					css_fn = true,
+					names = false,
+				},
+			})
 		end,
 	},
 }

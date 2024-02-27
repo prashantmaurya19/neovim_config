@@ -1,31 +1,10 @@
-local function load_servers(servers, config)
-	for _, server_name in pairs(servers) do
-		config[server_name].setup({capabilities = require('cmp_nvim_lsp').default_capabilities()})
-	end
-end
-
 return {
-	{
-		"williamboman/mason.nvim",
-		config = function()
-			require("mason").setup()
-		end,
-	},
-	{
-		"williamboman/mason-lspconfig.nvim",
-		config = function()
-			require("mason-lspconfig").setup({
-				ensure_installed = vim.g.pm_lsp_servers_list,
-			})
-		end,
-	},
 	{
 		"neovim/nvim-lspconfig",
 		config = function()
-			local lsp_config = require("lspconfig")
-			load_servers(vim.g.pm_lsp_servers_list, lsp_config)
-			lsp_config["dartls"].setup({
-				capabilities = require('cmp_nvim_lsp').default_capabilities(),
+			local lspconfig = require("lspconfig")
+			lspconfig["dartls"].setup({
+				capabilities = require("cmp_nvim_lsp").default_capabilities(),
 				dart = {
 					analysisExcludedFolders = {
 						vim.fn.expand("$HOME/AppData/Local/Pub/Cache"),
@@ -36,6 +15,39 @@ return {
 					updateImportsOnRename = true,
 					completeFunctionCalls = true,
 					showTodos = true,
+				},
+			})
+		end,
+	},
+	{
+		"williamboman/mason.nvim",
+		config = function()
+			require("mason").setup()
+		end,
+	},
+	{
+		"williamboman/mason-lspconfig.nvim",
+		config = function()
+			require("mason-lspconfig").setup({
+				ensure_installed = {"cssls", "tailwindcss", "lua_ls", "pylyzer",  "rust_analyzer", "tsserver" },
+				handlers = {
+					function(server_name) -- default handler (optional)
+						require("lspconfig")[server_name].setup({
+							capabilities = require("cmp_nvim_lsp").default_capabilities(),
+						})
+					end,
+					["lua_ls"] = function()
+						require("lspconfig").lua_ls.setup({
+							capabilities = require("cmp_nvim_lsp").default_capabilities(),
+							settings = {
+								Lua = {
+									diagnostics = {
+										globals = { "vim" },
+									},
+								},
+							},
+						})
+					end,
 				},
 			})
 		end,

@@ -1,3 +1,5 @@
+local ignore_component = {left_sep_provider=true,diagnostic_errors=true,diagnostic_warnings=true}
+
 local function extract_bg(component)
 	if component == nil then
 		return nil
@@ -60,7 +62,9 @@ end
 local function sepAlign(aligner, colors, row, style)
 	local new_colors = colors
 	for i, v in pairs(row) do
-		sepAlignHelper(aligner, new_colors[i], v, style)
+		if ignore_component[v.provider]==nil then
+			sepAlignHelper(aligner, new_colors[i], v, style)
+		end
 	end
 end
 
@@ -117,30 +121,30 @@ local c = {
 		left_sep = "left_filled",
 		right_sep = "block",
 	},
-	lsp_process = {
-		provider = "lsp_progress",
-		hl = {
-			fg = "red_bright",
-		},
+	separator = {
+		provider = "left_sep_provider",
+		hl={
+			fg="black_bright"
+		}
 	},
 }
 
 local left = {
 	c.vim_mode,
 	c.fileinfo,
+	c.diagnostic_errors,
+	c.separator,
+	c.diagnostic_warnings,
+	c.separator,
 }
 
-local middle = {
-	c.lsp_process,
-	c.diagnostic_errors,
-	c.diagnostic_warnings,
-}
+local middle = {}
 
 local right = {
 	c.lsp_client_names,
 }
 
-sepAlign(right2leftsepalign, create_color_maping(right, -1), right, "left_filled")
+-- sepAlign(right2leftsepalign, create_color_maping(right, -1), right, "left_filled")
 sepAlign(left2rightsepalign, create_color_maping(left, 1), left, "right_filled")
 
 return {
@@ -187,12 +191,8 @@ return {
 		COMMAND = "aqua",
 	},
 	custom_providers = {
-		lsp_progress = function(components, opts)
-			local lsp_message = require("pm_user.util.lsp").lsp_process()
-			if lsp_message ~= "" then
-				return lsp_message
-			end
-			return "lsp ok!"
+		left_sep_provider = function ()
+			return ""
 		end,
 		get_filename = function()
 			local filename = vim.api.nvim_buf_get_name(0)
@@ -201,7 +201,7 @@ return {
 			else
 				filename = vim.fn.fnamemodify(filename, ":~:.")
 			end
-			if require("pm_user.util.file").is_current_buf_modified() then
+			if vim.PM.file.is_current_buf_modified() then
 				filename = vim.fn.fnamemodify(filename, ":~:.") .. " ●"
 			end
 			return filename
@@ -211,5 +211,3 @@ return {
 		end,
 	},
 }
-
--- return M;

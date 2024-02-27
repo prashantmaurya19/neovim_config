@@ -5,10 +5,12 @@ vim.opt.cursorline = true
 
 vim.opt.termguicolors = true
 --globals
-vim.g.pm_lsp_servers_list = { "lua_ls","pylyzer", "rust_analyzer", "eslint"}
-vim.g.pm_shiftwidth= {
+vim.g.pm_inspect_table = {}
+vim.g.pm_path_sep = package.config:sub(1, 1)
+vim.g.pm_shiftwidth = {
 	lisp = 4,
-	dart = 2
+	dart = 2,
+	css = 2,
 }
 vim.g.pm_forward_slash_comment_filext = {
 	dart = true,
@@ -32,43 +34,9 @@ vim.diagnostic.config({
 	signs = true,
 })
 
---nvim_tree config
--- vim.g.loaded_netrw = 1
--- vim.g.loaded_netrwPlugin = 1
--- vim.g.netrw_keepdir = 0
-
-vim.g.nvim_tree_icons = {
-	default = "",
-	symlink = "",
-	git = {
-		deleted = "",
-		ignored = "◌",
-		renamed = "➜",
-		staged = "✓",
-		unmerged = "",
-		unstaged = "✗",
-		untracked = "★",
-	},
-	folder = {
-		-- disable indent_markers option to get arrows working or if you want both arrows and indent then just add the arrow icons in front            ofthe default and opened folders below!
-		-- arrow_open = "",
-		-- arrow_closed = "",
-		default = "",
-		empty = "", -- 
-		empty_open = "",
-		open = "",
-		symlink = "",
-		symlink_open = "",
-	},
-}
-
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd("command Z w | qa")
 vim.cmd("cabbrev wqa Z")
 
-
 --lsp_global_conf
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-  vim.lsp.handlers.signature_help,
-  { focusable = false }
-)
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { focusable = false })

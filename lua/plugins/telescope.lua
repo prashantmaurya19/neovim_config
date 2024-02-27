@@ -41,46 +41,15 @@ return {
 					path_display = { "truncate" },
 				},
 				pickers = {
-					bottom_pane = {
-						height = 25,
-						preview_cutoff = 120,
-						prompt_position = "top",
+					layout_strategy = "vertical",
+					layout_config = {
+						height = 40,
+						width = 0.6,
 					},
-					center = {
-						height = 0.4,
-						preview_cutoff = 40,
-						prompt_position = "top",
-						width = 0.5,
-					},
-					cursor = {
-						height = 0.9,
-						preview_cutoff = 40,
-						width = 0.8,
-					},
-					horizontal = {
-						height = 0.9,
-						preview_cutoff = 120,
-						prompt_position = "bottom",
-						width = 0.8,
-					},
-					vertical = {
-						height = 0.9,
-						preview_cutoff = 40,
-						prompt_position = "bottom",
-						width = 0.8,
+					current_buffer_fuzzy_find = {
+						previewer = false,
 					},
 				},
-
-				-- pickers = {
-				-- 	layout_strategy = "vertical",
-				-- 	layout_config = {
-				-- 		height = 40,
-				-- 		width = 0.6,
-				-- 	},
-				-- 	current_buffer_fuzzy_find = {
-				-- 		previewer = false,
-				-- 	},
-				-- },
 				extensions = {
 					["ui-select"] = {
 						require("telescope.themes").get_dropdown({

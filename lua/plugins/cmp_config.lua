@@ -1,14 +1,32 @@
-
 return {
 	"neovim/nvim-lspconfig",
 	"hrsh7th/cmp-nvim-lsp",
 	"hrsh7th/cmp-buffer",
 	"hrsh7th/cmp-path",
 	"hrsh7th/cmp-cmdline",
-	"L3MON4D3/LuaSnip",
 	"saadparwaiz1/cmp_luasnip",
 	{
+		"roobert/tailwindcss-colorizer-cmp.nvim",
+		-- optionally, override the default options:
+		config = function()
+			require("tailwindcss-colorizer-cmp").setup({
+				color_square_width = 4,
+			})
+		end,
+	},
+	{
 		"hrsh7th/nvim-cmp",
+		dependencies = {
+
+			"roobert/tailwindcss-colorizer-cmp.nvim",
+			"neovim/nvim-lspconfig",
+			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-cmdline",
+			"L3MON4D3/LuaSnip",
+			"saadparwaiz1/cmp_luasnip",
+		},
 		config = function()
 			local cmp = require("cmp")
 			vim.opt.pumblend = 0
@@ -16,15 +34,15 @@ return {
 				formatting = {
 					ields = { "abbr", "menu", "kind" },
 					format = function(entry, item)
-						item.abbr = require("pm_user.util.texts").truncate(item.abbr,35)
-						if item.menu~= nil then
-							if vim.g.pm_cmp_menu_icon[item.menu]==nil then
-								item.menu = require("pm_user.util.texts").truncate(item.menu,30)
+						item.abbr = require("pm_user.util.texts").truncate(item.abbr, 35)
+						if item.menu ~= nil then
+							if vim.g.pm_cmp_menu_icon[item.menu] == nil then
+								item.menu = require("pm_user.util.texts").truncate(item.menu, 30)
 							else
 								item.menu = vim.g.pm_cmp_menu_icon[item.menu]
 							end
 						end
-						return item
+						return require("tailwindcss-colorizer-cmp").formatter(entry, item)
 					end,
 				},
 				completion = { completeopt = "menu,menuone,noinsert" },
