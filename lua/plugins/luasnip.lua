@@ -38,6 +38,13 @@ return {
 			html={
 				s("tag",fmt("<{}{}>{}</{}>",{i(1),i(2),i(0),rep(1)})),
 				s("ctag",fmt("<{}/>",i(0))),
+			},
+			javascript={
+				s("jsdoc",fmt([[
+/**  
+ * {}
+*/
+				]],{i(0)}))
 			}
 		}
 

@@ -1,4 +1,5 @@
-local ignore_component = {left_sep_provider=true,diagnostic_errors=true,diagnostic_warnings=true}
+local ignore_component =
+	{ git_branch_name = true, left_sep_provider = true, diagnostic_errors = true, diagnostic_warnings = true }
 
 local function extract_bg(component)
 	if component == nil then
@@ -62,7 +63,7 @@ end
 local function sepAlign(aligner, colors, row, style)
 	local new_colors = colors
 	for i, v in pairs(row) do
-		if ignore_component[v.provider]==nil then
+		if ignore_component[v.provider] == nil then
 			sepAlignHelper(aligner, new_colors[i], v, style)
 		end
 	end
@@ -105,6 +106,12 @@ local c = {
 			fg = "red",
 		},
 	},
+	git_branch = {
+		provider = "git_branch_name",
+		hl = {
+			fg = "orange_bright",
+		},
+	},
 	diagnostic_warnings = {
 		provider = "diagnostic_warnings",
 		hl = {
@@ -123,15 +130,17 @@ local c = {
 	},
 	separator = {
 		provider = "left_sep_provider",
-		hl={
-			fg="black_bright"
-		}
+		hl = {
+			fg = "black_bright",
+		},
 	},
 }
 
 local left = {
 	c.vim_mode,
 	c.fileinfo,
+	c.git_branch,
+	c.separator,
 	c.diagnostic_errors,
 	c.separator,
 	c.diagnostic_warnings,
@@ -144,7 +153,7 @@ local right = {
 	c.lsp_client_names,
 }
 
--- sepAlign(right2leftsepalign, create_color_maping(right, -1), right, "left_filled")
+sepAlign(right2leftsepalign, create_color_maping(right, -1), right, "left_filled")
 sepAlign(left2rightsepalign, create_color_maping(left, 1), left, "right_filled")
 
 return {
@@ -191,8 +200,21 @@ return {
 		COMMAND = "aqua",
 	},
 	custom_providers = {
-		left_sep_provider = function ()
+		left_sep_provider = function()
 			return ""
+		end,
+		git_branch_name = function()
+			if vim.PM.git_branch == "" then
+				local p = io.popen("2>nul git rev-parse --abbrev-ref HEAD")
+				if p ~= nil then
+					vim.PM.git_branch = p:read("*all")
+					vim.PM.git_branch = vim.PM.git_branch:gsub("[\r\n]+", " ") or ""
+					p:close()
+				else
+					vim.PM.git_branch = ""
+				end
+			end
+			return vim.PM.git_branch == "" and "" or "  " .. vim.PM.git_branch
 		end,
 		get_filename = function()
 			local filename = vim.api.nvim_buf_get_name(0)
