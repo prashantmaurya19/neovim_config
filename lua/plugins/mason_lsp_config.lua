@@ -29,7 +29,7 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = {"cssls", "tailwindcss", "lua_ls", "pylyzer",  "rust_analyzer", "tsserver" },
+				ensure_installed = {"cssls", "tailwindcss", "lua_ls", "pyright",  "rust_analyzer", "tsserver" },
 				handlers = {
 					function(server_name) -- default handler (optional)
 						if server_name=="pylyzer" then

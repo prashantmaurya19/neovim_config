@@ -32,6 +32,7 @@ keyset("n", "<A-k>", ":tabmove+1<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-t>", ":Ex<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<leader>ne", ":tabnew<bar>Ex<CR>",keyargs({ "noremap", "silent" }))
 keyset("n", "<leader>nt", ":tabnew<bar>term<CR>", keyargs{ "noremap", "silent" })
+keyset("n", "<leader>s", ":mksession!session.vim<CR>", keyargs{ "noremap", "silent" })
 
 --lsp-keybinding
 vim.api.nvim_create_autocmd("LspAttach", {
