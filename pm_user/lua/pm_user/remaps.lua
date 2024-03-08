@@ -1,5 +1,6 @@
 local function keyargs(...)
-	local keyarg = {}
+	local keyarg = {
+	}
 	for _, value in ipairs(...) do
 		keyarg[value] = true
 	end
@@ -8,13 +9,12 @@ end
 
 local keyset = vim.keymap.set
 
-keyset("n", "<leader>l", function()
+keyset("n", "<S-O>", function()
 	require("conform").format{
 		async=true
 	}
 end, keyargs({ "noremap", "silent" }))
 
-keyset("n", "<A-n>", ":tabnew<CR>", keyargs{ "noremap", "silent" })
 keyset("n", "<C-k>", ":tabnext<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-h>", ":tabprevious<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-x>", ":tabclose<CR>", keyargs({ "noremap", "silent" }))
@@ -30,7 +30,8 @@ keyset("n", "<A-k>", ":tabmove+1<CR>", keyargs({ "noremap", "silent" }))
 
 --netrw
 keyset("n", "<C-t>", ":Ex<CR>", keyargs({ "noremap", "silent" }))
-keyset("n", "<A-t>", ":tabnew<bar>Ex<CR>",keyargs({ "noremap", "silent" }))
+keyset("n", "<leader>ne", ":tabnew<bar>Ex<CR>",keyargs({ "noremap", "silent" }))
+keyset("n", "<leader>nt", ":tabnew<bar>term<CR>", keyargs{ "noremap", "silent" })
 
 --lsp-keybinding
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -48,7 +49,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		keyset("n", "[d", function()
 			vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
 		end, opts)
-		keyset({"n","t"}, "<C-P>", vim.lsp.buf.signature_help, opts)
+		keyset({"n","t"}, "<leader>u", vim.lsp.buf.signature_help, opts)
 	end,
 })
 
@@ -63,7 +64,7 @@ local telescope_opt = function()
 			local dirs = vim.PM.file.parse(path)
 			dirs.directories = table.slice(dirs.directories, #dirs.directories - 3, #dirs.directories)
 			table.insert(dirs.directories, dirs.filename)
-			return vim.PM.text.join(vim.g.pm_path_sep, dirs.directories)
+			return vim.PM.text.join(vim.PM.g.path_sep, dirs.directories)
 		end,
 	}
 end

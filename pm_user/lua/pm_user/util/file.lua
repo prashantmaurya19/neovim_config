@@ -19,7 +19,7 @@ function M.parse(path)
 	local dirs = {directories={}}
 	local last = 1
 	for i = 1,#path, 1 do
-		if string.sub(path,i,i)==vim.g.pm_path_sep then
+		if string.sub(path,i,i)==vim.PM.g.path_sep then
 			table.insert(dirs.directories,string.sub(path,last,i-1))
 			last = i+1
 		end

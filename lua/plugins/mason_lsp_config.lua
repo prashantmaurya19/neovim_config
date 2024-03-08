@@ -32,6 +32,9 @@ return {
 				ensure_installed = {"cssls", "tailwindcss", "lua_ls", "pylyzer",  "rust_analyzer", "tsserver" },
 				handlers = {
 					function(server_name) -- default handler (optional)
+						if server_name=="pylyzer" then
+							return
+						end
 						require("lspconfig")[server_name].setup({
 							capabilities = require("cmp_nvim_lsp").default_capabilities(),
 						})

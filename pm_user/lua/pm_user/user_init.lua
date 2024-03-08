@@ -3,9 +3,8 @@ vim.wo.relativenumber = true
 vim.opt.mouse = "a"
 vim.opt.encoding = "UTF-8"
 vim.opt.cursorline = true
-
 vim.opt.termguicolors = true
---globals
+vim.g.mapleader = " "
 
 vim.diagnostic.config({
 	virtual_text = false,

@@ -17,7 +17,6 @@ return {
 	{
 		"hrsh7th/nvim-cmp",
 		dependencies = {
-
 			"roobert/tailwindcss-colorizer-cmp.nvim",
 			"neovim/nvim-lspconfig",
 			"hrsh7th/cmp-nvim-lsp",
@@ -30,19 +29,21 @@ return {
 		config = function()
 			local cmp = require("cmp")
 			vim.opt.pumblend = 0
+			local tailwind_formater = require("tailwindcss-colorizer-cmp").formatter
 			cmp.setup({
 				formatting = {
-					ields = { "abbr", "menu", "kind" },
+					fields = { "abbr", "menu", "kind" },
 					format = function(entry, item)
-						item.abbr = require("pm_user.util.texts").truncate(item.abbr, 35)
+						item.abbr = vim.PM.text.truncate(item.abbr, 35)
 						if item.menu ~= nil then
-							if vim.g.pm_cmp_menu_icon[item.menu] == nil then
-								item.menu = require("pm_user.util.texts").truncate(item.menu, 30)
+							if vim.PM.g.cmp_menu_icon[item.menu] == nil then
+								item.menu = vim.PM.text.truncate(item.menu, 30)
 							else
-								item.menu = vim.g.pm_cmp_menu_icon[item.menu]
+								item.menu = vim.PM.g.cmp_menu_icon[item.menu]
 							end
 						end
-						return require("tailwindcss-colorizer-cmp").formatter(entry, item)
+						-- return item
+						return tailwind_formater(entry, item)
 					end,
 				},
 				completion = { completeopt = "menu,menuone,noinsert" },
@@ -96,18 +97,6 @@ return {
 					{ name = "cmdline" },
 				}),
 			})
-
-			-- Set up lspconfig.
-			-- local capabilities = require("cmp_nvim_lsp").default_capabilities()
-			-- function load_servers(servers)
-			-- 	for _, server_name in pairs(servers) do
-			-- 		require("lspconfig")[server_name].setup({
-			-- 			capabilities = capabilities,
-			-- 		})
-			-- 	end
-			-- end
-
-			-- load_servers(vim.g.pm_lsp_servers_list)
 		end,
 	},
 }
