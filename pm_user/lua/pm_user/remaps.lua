@@ -9,11 +9,6 @@ end
 
 local keyset = vim.keymap.set
 
-keyset("n", "<S-O>", function()
-	require("conform").format{
-		async=true
-	}
-end, keyargs({ "noremap", "silent" }))
 
 keyset("n", "<C-k>", ":tabnext<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-h>", ":tabprevious<CR>", keyargs({ "noremap", "silent" }))
@@ -33,6 +28,11 @@ keyset("n", "<C-t>", ":Ex<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<leader>ne", ":tabnew<bar>Ex<CR>",keyargs({ "noremap", "silent" }))
 keyset("n", "<leader>nt", ":tabnew<bar>term<CR>", keyargs{ "noremap", "silent" })
 keyset("n", "<leader>s", ":mksession!session.vim<CR>", keyargs{ "noremap", "silent" })
+keyset("n", "<leader>fo", function()
+	require("conform").format{
+		async=true
+	}
+end, keyargs({ "noremap", "silent" }))
 
 --lsp-keybinding
 vim.api.nvim_create_autocmd("LspAttach", {
