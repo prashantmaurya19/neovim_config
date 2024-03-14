@@ -10,14 +10,6 @@ return {
 		config = function()
 			vim.g.moonflyItalics = false
 			vim.g.moonflyTransparent = true
-			require("moonfly").setup({
-				emerald = "#24feaf",
-				blue = "#4268ff",
-				sky = "#4de7ff",
-				turquoise = "#2bc5a8",
-				purple = "#732370",
-				violet = "#8000FF",
-			})
 		end,
 	},
 	{

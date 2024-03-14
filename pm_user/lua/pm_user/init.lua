@@ -4,7 +4,6 @@ return {
 		require("pm_user.user_init")
 		require("pm_user.commands")
 		require("pm_user.remaps")
-		require("pm_user.colorscheme")
 		require("pm_user.auto_cmd")
 		vim.PM = {
 			git_branch = "",
