@@ -50,7 +50,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		keyset("n", "[d", function()
 			vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
 		end, opts)
-		keyset({"n","t"}, "<leader>u", vim.lsp.buf.signature_help, opts)
+		keyset("n", "<leader>u", vim.lsp.buf.signature_help, opts)
 	end,
 })
 
