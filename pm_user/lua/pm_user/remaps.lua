@@ -1,6 +1,5 @@
 local function keyargs(...)
-	local keyarg = {
-	}
+	local keyarg = {}
 	for _, value in ipairs(...) do
 		keyarg[value] = true
 	end
@@ -8,30 +7,36 @@ local function keyargs(...)
 end
 
 local keyset = vim.keymap.set
-
-
 keyset("n", "<C-k>", ":tabnext<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-h>", ":tabprevious<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-x>", ":tabclose<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-d>", "<C-d>zz")
 keyset("n", "<C-u>", "<C-u>zz")
 
-keyset("x","<leader>p",[["_dP]])
-keyset("v","J",":m '>+1<CR>gv=gv")
-keyset("v","K",":m '<-2<CR>gv=gv")
+keyset("x", "<leader>p", [["_dP]])
+keyset("v", "J", ":m '>+1<CR>gv=gv")
+keyset("v", "K", ":m '<-2<CR>gv=gv")
 
 keyset("n", "<A-h>", ":tabmove-1<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<A-k>", ":tabmove+1<CR>", keyargs({ "noremap", "silent" }))
 
 --netrw
 keyset("n", "<C-t>", ":Ex<CR>", keyargs({ "noremap", "silent" }))
-keyset("n", "<leader>ne", ":tabnew<bar>Ex<CR>",keyargs({ "noremap", "silent" }))
-keyset("n", "<leader>nt", ":tabnew<bar>term<CR>", keyargs{ "noremap", "silent" })
-keyset("n", "<leader>s", ":mksession!session.vim<CR>", keyargs{ "noremap", "silent" })
+keyset("n", "<leader>nes", function()
+	vim.cmd("tabnew")
+	vim.cmd("Ex")
+end, keyargs({ "noremap", "silent" }))
+keyset("n", "<leader>nee", function()
+	local filename = vim.api.nvim_buf_get_name(0):gsub(vim.fn.getcwd() .. vim.PM.g.path_sep, "")
+	vim.cmd("tabnew")
+	vim.cmd("Ex " .. filename:gsub(vim.PM.file.parse(filename).filename, ""))
+	-- vim.cmd("Ex " .. filename)
+end, keyargs({ "noremap", "silent" }))
+keyset("n", "<leader>s", ":mksession!session.vim<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<leader>fo", function()
-	require("conform").format{
-		async=true
-	}
+	require("conform").format({
+		async = true,
+	})
 end, keyargs({ "noremap", "silent" }))
 
 --lsp-keybinding
@@ -61,7 +66,7 @@ local telescope_opt = function()
 		previewer = false,
 		layout_strategies = "vertical",
 		line_width = 0.25,
-		path_display = function(opts, path)
+		path_display = function(_, path)
 			local dirs = vim.PM.file.parse(path)
 			dirs.directories = table.slice(dirs.directories, #dirs.directories - 3, #dirs.directories)
 			table.insert(dirs.directories, dirs.filename)
@@ -71,26 +76,26 @@ local telescope_opt = function()
 end
 keyset("n", "<leader>ff", function()
 	builtin.find_files(telescope_opt())
-end,keyargs{ "noremap", "silent" })
+end, keyargs({ "noremap", "silent" }))
 
 keyset("n", "<leader>fg", function()
 	builtin.live_grep(telescope_opt())
-end,keyargs{ "noremap", "silent" })
+end, keyargs({ "noremap", "silent" }))
 
 keyset("n", "<leader>fh", function()
 	builtin.help_tags(telescope_opt())
-end,keyargs{ "noremap", "silent" })
+end, keyargs({ "noremap", "silent" }))
 
 keyset("n", "<leader>fs", function()
 	builtin.lsp_document_symbols(telescope_opt())
-end,keyargs{ "noremap", "silent" })
+end, keyargs({ "noremap", "silent" }))
 keyset("n", "<leader>fb", function()
 	builtin.buffers(telescope_opt())
-end,keyargs{ "noremap", "silent" })
+end, keyargs({ "noremap", "silent" }))
 keyset("n", "<leader>fr", function()
 	builtin.lsp_references(telescope_opt())
-end,keyargs{ "noremap", "silent" })
+end, keyargs({ "noremap", "silent" }))
 
 keyset("n", "<leader>dd", function()
 	builtin.diagnostics(telescope_opt())
-end,keyargs{ "noremap", "silent" })
+end, keyargs({ "noremap", "silent" }))
