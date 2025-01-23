@@ -1,7 +1,11 @@
 local function keyargs(...)
 	local keyarg = {}
-	for _, value in ipairs(...) do
-		keyarg[value] = true
+	for k, value in ipairs(...) do
+		if k~="desc" then
+			keyarg[value] = true
+		else
+			keyarg[k] = value
+		end
 	end
 	return keyarg
 end
@@ -34,10 +38,10 @@ keyset("n", "<leader>nee", function()
 end, keyargs({ "noremap", "silent" }))
 keyset("n", "<leader>s", ":mksession!session.vim<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<leader>fo", function()
-	require("conform").format({
+require("conform").format({
 		async = true,
 	})
-end, keyargs({ "noremap", "silent" }))
+end, keyargs({ "noremap", "silent" ,desc="conform format"}))
 
 --lsp-keybinding
 vim.api.nvim_create_autocmd("LspAttach", {

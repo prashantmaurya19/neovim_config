@@ -10,8 +10,8 @@
 
 -- 	-- custom mappings
 -- 	local keyset = vim.keymap.set
--- 	keyset("n", "<C-t>", api.tree.toggle, opts("toggle"))
 -- 	keyset("n", "t", api.node.open.tab, opts("new tab"))
+-- 	keyset("n", "<C-t>", api.tree.toggle, opts("toggle"))
 -- 	keyset("n", "r", api.fs.rename_full, opts("rename full path"))
 -- 	keyset("n", "u", api.fs.rename, opts("rename file"))
 -- 	keyset("n", "?", api.tree.toggle_help, opts("Help"))

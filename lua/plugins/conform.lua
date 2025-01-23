@@ -11,6 +11,8 @@ return {
 					html = {"prettier"},
 					css = {"prettier"},
 					javascript = {"prettier"},
+					xml = {"xmlformatter"},
+					java={"google-java-format"}
 				},
 			})
 		end

@@ -15,6 +15,7 @@ M.shiftwidth = {
 	dart = 2,
 	css = 2,
 	javascript = 2,
+	java=2
 }
 M.forward_slash_comment_filext = {
 	dart = true,

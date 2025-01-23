@@ -1,6 +1,6 @@
 -- local commantary_group = vim.api.nvim_create_
 vim.api.nvim_create_autocmd("FileType", {
-	desc = "set indent for dart files",
+	desc = "set custom indent for files",
 	callback = function(opts)
 		if vim.PM.g.forward_slash_comment_filext[vim.bo[opts.buf].filetype] then
 			vim.opt_local.commentstring = "//%s"
