@@ -2,4 +2,5 @@
 my cool 😍 neovim config💖
 
 **Prerequisites**
-* Clang 
+* Zig
+* fzf 
