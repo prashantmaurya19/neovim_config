@@ -1,7 +1,7 @@
 local function keyargs(...)
 	local keyarg = {}
 	for k, value in ipairs(...) do
-		if k~="desc" then
+		if k ~= "desc" then
 			keyarg[value] = true
 		else
 			keyarg[k] = value
@@ -11,6 +11,7 @@ local function keyargs(...)
 end
 
 local keyset = vim.keymap.set
+keyset("n", "<C-t>", ":tabnew<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-k>", ":tabnext<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-h>", ":tabprevious<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-x>", ":tabclose<CR>", keyargs({ "noremap", "silent" }))
@@ -25,23 +26,23 @@ keyset("n", "<A-h>", ":tabmove-1<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<A-k>", ":tabmove+1<CR>", keyargs({ "noremap", "silent" }))
 
 --netrw
-keyset("n", "<C-t>", ":Ex<CR>", keyargs({ "noremap", "silent" }))
+keyset("n", "<leader>ex", ":Ex<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<leader>nes", function()
 	vim.cmd("tabnew")
 	vim.cmd("Ex")
 end, keyargs({ "noremap", "silent" }))
+
 keyset("n", "<leader>nee", function()
 	local filename = vim.api.nvim_buf_get_name(0)
 	vim.cmd("tabnew")
 	vim.cmd("Ex " .. filename:gsub(vim.PM.file.parse(filename).filename, ""))
-	-- vim.cmd("Ex " .. filename)
 end, keyargs({ "noremap", "silent" }))
-keyset("n", "<leader>s", ":mksession!session.vim<CR>", keyargs({ "noremap", "silent" }))
+
 keyset("n", "<leader>fo", function()
-require("conform").format({
+	require("conform").format({
 		async = true,
 	})
-end, keyargs({ "noremap", "silent" ,desc="conform format"}))
+end, keyargs({ "noremap", "silent", desc = "conform format" }))
 
 --lsp-keybinding
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -80,6 +81,10 @@ local telescope_opt = function()
 end
 keyset("n", "<leader>ff", function()
 	builtin.find_files(telescope_opt())
+end, keyargs({ "noremap", "silent" }))
+
+keyset("n", "<leader>fd", function()
+	require("pm_user.telescope_find_folder").find_folders(telescope_opt())
 end, keyargs({ "noremap", "silent" }))
 
 keyset("n", "<leader>fg", function()
