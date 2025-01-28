@@ -14,7 +14,7 @@ local keyset = vim.keymap.set
 keyset("n", "<C-t>", ":tabnew<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-k>", ":tabnext<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-h>", ":tabprevious<CR>", keyargs({ "noremap", "silent" }))
-keyset("n", "<C-x>", ":tabclose<CR>", keyargs({ "noremap", "silent" }))
+keyset("n", "<C-x>", ":bd<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-d>", "<C-d>zz")
 keyset("n", "<C-u>", "<C-u>zz")
 

@@ -5,7 +5,8 @@ M.luatab = {
 	TelescopePrompt="Telescope",
 	git= "Git",
 	fugitive="Fugitive",
-	netrw="netrw"
+	netrw="netrw",
+	["checkhealth"] = "checkhealth"
 }
 
 M.path_sep = package.config:sub(1, 1)

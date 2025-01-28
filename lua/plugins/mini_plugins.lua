@@ -75,6 +75,9 @@ return {
 					elseif filetype == "netrw" then
 						icon, devhl = devicons.get_icon("markdown")
 						icon = "󰙅"
+					elseif filetype == "checkhealth" then
+						icon, devhl = devicons.get_icon("git")
+						icon = ""
 					elseif buftype == "terminal" then
 						icon, devhl = devicons.get_icon("zsh")
 					else

@@ -18,11 +18,8 @@ M.find_folders = function(opts)
 			attach_mappings = function(bufnr, _)
 				actions.select_default:replace(function()
 					actions.close(bufnr)
-					local selection = actions_state.get_selected_entry()
-					-- vim.print(selection)
 					vim.cmd("tabnew")
-					vim.cmd("Ex "..selection[1])
-					-- vim.cmd('colorscheme '..selection[1])
+					vim.cmd("Ex "..actions_state.get_selected_entry()[1])
 				end)
 				return true
 			end,
