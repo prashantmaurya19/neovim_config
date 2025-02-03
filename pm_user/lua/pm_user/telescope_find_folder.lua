@@ -18,7 +18,6 @@ M.find_folders = function(opts)
 			attach_mappings = function(bufnr, _)
 				actions.select_default:replace(function()
 					actions.close(bufnr)
-					vim.cmd("tabnew")
 					vim.cmd("Ex "..actions_state.get_selected_entry()[1])
 				end)
 				return true

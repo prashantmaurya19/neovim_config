@@ -1,3 +1,17 @@
+local builtin = require("telescope.builtin")
+local telescope_opt = function()
+	return {
+		previewer = false,
+		layout_strategies = "vertical",
+		line_width = 0.25,
+		path_display = function(_, path)
+			local dirs = vim.PM.file.parse(path)
+			dirs.directories = table.slice(dirs.directories, #dirs.directories - 3, #dirs.directories)
+			table.insert(dirs.directories, dirs.filename)
+			return vim.PM.text.join(vim.PM.g.path_sep, dirs.directories)
+		end,
+	}
+end
 local function keyargs(...)
 	local keyarg = {}
 	for k, value in ipairs(...) do
@@ -11,7 +25,6 @@ local function keyargs(...)
 end
 
 local keyset = vim.keymap.set
-keyset("n", "<C-t>", ":tabnew<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-k>", ":tabnext<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-h>", ":tabprevious<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-x>", ":bd<CR>", keyargs({ "noremap", "silent" }))
@@ -27,6 +40,18 @@ keyset("n", "<A-k>", ":tabmove+1<CR>", keyargs({ "noremap", "silent" }))
 
 --netrw
 keyset("n", "<leader>ex", ":Ex<CR>", keyargs({ "noremap", "silent" }))
+keyset("n", "<leader>ntt",function ()
+	vim.cmd( "tabnew")
+	vim.cmd( "terminal")
+end, keyargs({ "noremap", "silent" }))
+keyset("n", "<leader>nff",function ()
+	vim.cmd( "tabnew")
+	builtin.find_files(telescope_opt())
+end, keyargs({ "noremap", "silent" }))
+keyset("n", "<leader>nfd",function ()
+	vim.cmd("tabnew")
+	require("pm_user.telescope_find_folder").find_folders(telescope_opt())
+end, keyargs({ "noremap", "silent" }))
 keyset("n", "<leader>nes", function()
 	vim.cmd("tabnew")
 	vim.cmd("Ex")
@@ -65,20 +90,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 --telescope
-local builtin = require("telescope.builtin")
-local telescope_opt = function()
-	return {
-		previewer = false,
-		layout_strategies = "vertical",
-		line_width = 0.25,
-		path_display = function(_, path)
-			local dirs = vim.PM.file.parse(path)
-			dirs.directories = table.slice(dirs.directories, #dirs.directories - 3, #dirs.directories)
-			table.insert(dirs.directories, dirs.filename)
-			return vim.PM.text.join(vim.PM.g.path_sep, dirs.directories)
-		end,
-	}
-end
 keyset("n", "<leader>ff", function()
 	builtin.find_files(telescope_opt())
 end, keyargs({ "noremap", "silent" }))
