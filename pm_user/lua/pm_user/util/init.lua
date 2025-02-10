@@ -7,3 +7,12 @@ function table.slice(tbl, first, last, step)
 end
 
 
+
+function table.update(oldTable, newValues)
+	for key, value in pairs(newValues) do
+		oldTable[key] = value
+	end
+	return oldTable
+end
+
+

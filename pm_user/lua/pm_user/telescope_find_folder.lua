@@ -4,7 +4,6 @@ local conf = require("telescope.config").values
 local actions = require("telescope.actions")
 local actions_state = require("telescope.actions.state")
 
-
 local M = {}
 
 M.find_folders = function(opts)
@@ -12,13 +11,13 @@ M.find_folders = function(opts)
 	pickers
 		.new(opts, {
 			finder = finders.new_table({
-				results = vim.PM.file.scandir(vim.fn.getcwd())
+				results = vim.PM.file.scandir(vim.fn.getcwd()),
 			}),
 			sorter = conf.generic_sorter(opts),
 			attach_mappings = function(bufnr, _)
 				actions.select_default:replace(function()
 					actions.close(bufnr)
-					vim.cmd("Ex "..actions_state.get_selected_entry()[1])
+					vim.cmd("Ex " .. actions_state.get_selected_entry()[1])
 				end)
 				return true
 			end,

@@ -1,6 +1,6 @@
 local builtin = require("telescope.builtin")
-local telescope_opt = function()
-	return {
+local telescope_opt = function(opt)
+	return table.update({
 		previewer = false,
 		layout_strategies = "vertical",
 		line_width = 0.25,
@@ -10,7 +10,7 @@ local telescope_opt = function()
 			table.insert(dirs.directories, dirs.filename)
 			return vim.PM.text.join(vim.PM.g.path_sep, dirs.directories)
 		end,
-	}
+	}, opt or {})
 end
 local function keyargs(...)
 	local keyarg = {}
@@ -25,44 +25,44 @@ local function keyargs(...)
 end
 
 local keyset = vim.keymap.set
+keyset({ "t" }, "<C-n>", "<C-\\><C-n>")
+keyset("x", "<leader>p", [["_dP]])
+keyset("v", "J", ":m '>+1<CR>gv=gv")
+keyset("v", "K", ":m '<-2<CR>gv=gv")
+keyset("v", "Y", [["+y]])
+keyset("n","<C-p>",[["+p]])
+keyset("n","<C-P>",[["+p]])
 keyset("n", "<C-k>", ":tabnext<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-h>", ":tabprevious<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-x>", ":bd<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<C-d>", "<C-d>zz")
 keyset("n", "<C-u>", "<C-u>zz")
-
-keyset("x", "<leader>p", [["_dP]])
-keyset("v", "J", ":m '>+1<CR>gv=gv")
-keyset("v", "K", ":m '<-2<CR>gv=gv")
-
 keyset("n", "<A-h>", ":tabmove-1<CR>", keyargs({ "noremap", "silent" }))
 keyset("n", "<A-k>", ":tabmove+1<CR>", keyargs({ "noremap", "silent" }))
 
 --netrw
 keyset("n", "<leader>ex", ":Ex<CR>", keyargs({ "noremap", "silent" }))
-keyset("n", "<leader>ntt",function ()
-	vim.cmd( "tabnew")
-	vim.cmd( "terminal")
+keyset("n", "<leader>ntt", function()
+	vim.cmd("tabnew")
+	vim.cmd("terminal")
 end, keyargs({ "noremap", "silent" }))
-keyset("n", "<leader>nff",function ()
-	vim.cmd( "tabnew")
+keyset("n", "<leader>nff", function()
+	vim.cmd("tabnew")
 	builtin.find_files(telescope_opt())
 end, keyargs({ "noremap", "silent" }))
-keyset("n", "<leader>nfd",function ()
+keyset("n", "<leader>nfd", function()
 	vim.cmd("tabnew")
 	require("pm_user.telescope_find_folder").find_folders(telescope_opt())
 end, keyargs({ "noremap", "silent" }))
-keyset("n", "<leader>nes", function()
+keyset("n", "<leader>nex", function()
 	vim.cmd("tabnew")
 	vim.cmd("Ex")
 end, keyargs({ "noremap", "silent" }))
-
-keyset("n", "<leader>nee", function()
+keyset("n", "<leader>nef", function()
 	local filename = vim.api.nvim_buf_get_name(0)
 	vim.cmd("tabnew")
 	vim.cmd("Ex " .. filename:gsub(vim.PM.file.parse(filename).filename, ""))
 end, keyargs({ "noremap", "silent" }))
-
 keyset("n", "<leader>fo", function()
 	require("conform").format({
 		async = true,
@@ -92,6 +92,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 --telescope
 keyset("n", "<leader>ff", function()
 	builtin.find_files(telescope_opt())
+end, keyargs({ "noremap", "silent" }))
+
+keyset("n", "<leader>en", function()
+	builtin.find_files(telescope_opt({ cwd = vim.fn.stdpath("config") }))
 end, keyargs({ "noremap", "silent" }))
 
 keyset("n", "<leader>fd", function()
