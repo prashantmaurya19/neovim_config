@@ -1,20 +1,21 @@
 return {
 	{
-		'stevearc/conform.nvim',
+		"stevearc/conform.nvim",
 		opts = {},
-		config=function()
+		config = function()
 			require("conform").setup({
 				formatters_by_ft = {
 					lua = { "stylua" },
 					python = { "black" },
-					rust = {"rustfmt"},
-					html = {"prettier"},
-					css = {"prettier"},
-					javascript = {"prettier"},
-					xml = {"xmlformatter"},
-					java={"google-java-format"}
+					rust = { "rustfmt" },
+					html = { "prettier" },
+					css = { "prettier" },
+					javascript = { "prettier" },
+					json = { "prettier" },
+					xml = { "xmlformatter" },
+					java = { "google-java-format" },
 				},
 			})
-		end
-	}
+		end,
+	},
 }

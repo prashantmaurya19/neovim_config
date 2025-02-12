@@ -1,5 +1,6 @@
+local autocmd = vim.api.nvim_create_autocmd
 -- local commantary_group = vim.api.nvim_create_
-vim.api.nvim_create_autocmd("FileType", {
+autocmd("FileType", {
 	desc = "set custom indent for files",
 	callback = function(opts)
 		if vim.PM.g.forward_slash_comment_filext[vim.bo[opts.buf].filetype] then
@@ -12,3 +13,4 @@ vim.api.nvim_create_autocmd("FileType", {
 		end
 	end,
 })
+

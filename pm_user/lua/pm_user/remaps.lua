@@ -25,6 +25,8 @@ local function keyargs(...)
 end
 
 local keyset = vim.keymap.set
+keyset("n","<leader>ss",":mksession!session.vim",keyargs({ "noremap", "silent" }))
+keyset("n","<leader>ro",":e!",keyargs({ "noremap", "silent" }))
 keyset({ "t" }, "<C-n>", "<C-\\><C-n>")
 keyset("x", "<leader>p", [["_dP]])
 keyset("v", "J", ":m '>+1<CR>gv=gv")
