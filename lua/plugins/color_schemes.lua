@@ -1,7 +1,16 @@
 return {
 	{ priority = 20000, "https://github.com/folke/tokyonight.nvim" },
 	{ priority = 20000, "kepano/flexoki-neovim" },
-	{ priority = 20000, "Mofiqul/dracula.nvim" },
+	{
+		priority = 20000,
+		"Mofiqul/dracula.nvim",
+		config = function()
+			local dracula = require("dracula")
+			dracula.setup({
+				transparent_bg = true,
+			})
+		end,
+	},
 	{ priority = 20000, "pineapplegiant/spaceduck", branch = "main" },
 	{
 		priority = 20000,
