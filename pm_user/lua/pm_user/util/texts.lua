@@ -1,5 +1,25 @@
 local M = {}
 
+---@param str string
+---@param delimiter string
+---@return table<string>
+function M.split_string(str, delimiter)
+	local result = {}
+	local start = 1
+	while true do
+		local match = string.match(str, delimiter, start)
+		if not match then
+			table.insert(result, string.sub(str, start))
+
+			break
+		end
+		table.insert(result, string.sub(str, start, match - 1))
+		start = match + string.len(delimiter)
+	end
+
+	return result
+end
+
 ---@param join_sep string
 ---@param strs table<string>
 ---@return string

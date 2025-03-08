@@ -23,22 +23,25 @@ return {
 		-- local conds = require("luasnip.extras.conditions")
 		-- local conds_expand = require("luasnip.extras.conditions.expand")
 		--keybinding
-		vim.keymap.set({"i","s"},"<A-k>",function ()
+		vim.keymap.set({ "i", "s" }, "<A-k>", function()
 			if ls.expand_or_jumpable() then
 				ls.expand_or_jump()
 			end
-		end,{silent=true})
-		vim.keymap.set({"i","s"},"<A-j>",function ()
+		end, { silent = true })
+		vim.keymap.set({ "i", "s" }, "<A-j>", function()
 			if ls.jumpable(-1) then
 				ls.jump(-1)
 			end
-		end,{silent=true})
+		end, { silent = true })
 
 		local snippets = {
-			html={
-				s("tag",fmt("<{}{}>{}</{}>",{i(1),i(2),i(0),rep(1)})),
-				s("ctag",fmt("<{}/>",i(0))),
-				s("!!!",fmt([[
+			html = {
+				s("tag", fmt("<{}{}>{}</{}>", { i(1), i(2), i(0), rep(1) })),
+				s("ctag", fmt("<{}/>", i(0))),
+				s(
+					"!!!",
+					fmt(
+						[[
 <!doctype html>
 <html lang="en">
   <head>
@@ -50,30 +53,43 @@ return {
   {}
   </body>
 </html>
-				]],{i(1),i(0)}))
+				]],
+						{ i(1), i(0) }
+					)
+				),
 			},
-			javascript={
-				s("jsdoc",fmt([[
+			javascript = {
+				s(
+					"jsdoc",
+					fmt(
+						[[
 /**  
  * {}
 */
-				]],{i(0)})),
-				s("tag",fmt("<{}{}>{}</{}>",{i(1),i(2),i(0),rep(1)})),
-				s("ctag",fmt("<{}/>",i(0))),
+				]],
+						{ i(0) }
+					)
+				),
+				s("tag", fmt("<{}{}>{}</{}>", { i(1), i(2), i(0), rep(1) })),
+				s("ctag", fmt("<{}/>", i(0))),
 			},
-			python={
-				s("doc",fmt([[
+			python = {
+				s(
+					"doc",
+					fmt(
+						[[
 """
 {}
 """
-				]],{i(0)}))
-			}
+				]],
+						{ i(0) }
+					)
+				),
+			},
 		}
 
-
-
 		for key, value in pairs(snippets) do
-			ls.add_snippets(key,value)
+			ls.add_snippets(key, value)
 		end
 	end,
 }
