@@ -1,4 +1,24 @@
+local builtin = require("telescope.builtin")
+local pm_telescope_ext = require("pm_user.telescope_ext")
+local keyset = vim.keymap.set
+
 local M = {
+  on_lsp_attach = function(ev)
+    vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+    local opts = { buffer = ev.buf }
+    keyset("n", "<S-k>", vim.lsp.buf.hover, opts)
+    keyset("n", "<leader>a", vim.lsp.buf.code_action, opts)
+    keyset("n", "<S-l>", function()
+      vim.diagnostic.open_float(nil, { focus = false })
+    end, opts)
+    keyset("n", "]d", function()
+      vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+    end, opts)
+    keyset("n", "[d", function()
+      vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+    end, opts)
+    keyset("n", "<leader>u", vim.lsp.buf.signature_help, opts)
+  end,
   telescope_opt = function(opt)
     return table.update({
       previewer = false,
@@ -39,11 +59,8 @@ local M = {
     end, kmode)
   end,
 }
-local builtin = require("telescope.builtin")
-local pm_telescope_ext = require("pm_user.telescope_ext")
-local keyset = vim.keymap.set
 keyset("n", "<leader>ss", ":mksession!s.vim<CR>", M.keyargs({ "noremap", "silent" }))
-keyset("n", "<leader>ro", ":w<BAR>e!<CR>", M.keyargs({ "noremap", "silent" }))
+keyset("n", "<leader>ro", ":e!<CR>", M.keyargs({ "noremap", "silent" }))
 keyset({ "t" }, "<C-n>", "<C-\\><C-n>")
 keyset("x", "<leader>p", [["_dP]])
 keyset("v", "J", ":m '>+1<CR>gv=gv")
@@ -62,8 +79,8 @@ keyset("n", "<C-l>", "<C-w><C-l>")
 
 keyset("n", "<A-[>", ":tabmove-1<CR>", M.keyargs({ "noremap", "silent" }))
 keyset("n", "<A-]>", ":tabmove+1<CR>", M.keyargs({ "noremap", "silent" }))
-keyset("n", "<Tab>", ":tabnext<CR>", M.keyargs({ "noremap", "silent" }))
-keyset("n", "<S-Tab>", ":tabprevious<CR>", M.keyargs({ "noremap", "silent" }))
+keyset("n", "<A-w>", ":tabnext<CR>", M.keyargs({ "noremap", "silent" }))
+keyset("n", "<A-q>", ":tabprevious<CR>", M.keyargs({ "noremap", "silent" }))
 
 keyset("n", "<leader>fo", function()
   require("conform").format({
@@ -125,22 +142,7 @@ end, M.keyargs({ "noremap", "silent" }))
 
 --lsp-keybinding
 vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function(ev)
-    vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
-    local opts = { buffer = ev.buf }
-    keyset("n", "<S-k>", vim.lsp.buf.hover, opts)
-    keyset("n", "<leader>a", vim.lsp.buf.code_action, opts)
-    keyset("n", "<S-l>", function()
-      vim.diagnostic.open_float(nil, { focus = false })
-    end, opts)
-    keyset("n", "]d", function()
-      vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
-    end, opts)
-    keyset("n", "[d", function()
-      vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
-    end, opts)
-    keyset("n", "<leader>u", vim.lsp.buf.signature_help, opts)
-  end,
+  callback = M.on_lsp_attach,
 })
 
 return M

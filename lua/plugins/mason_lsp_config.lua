@@ -3,6 +3,16 @@ return {
     "neovim/nvim-lspconfig",
     config = function()
       local lspconfig = require("lspconfig")
+
+      -- require("lspconfig").cssmodules_ls.setup({
+      --   -- provide your on_attach to bind keymappings
+      --   on_attach = require("pm_user.remaps").on_lsp_attach,
+      --   -- optionally
+      --   init_options = {
+      --     camelCase = "dashes",
+      --   },
+      -- })
+
       lspconfig["dartls"].setup({
         capabilities = require("cmp_nvim_lsp").default_capabilities(),
         dart = {
