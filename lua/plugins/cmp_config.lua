@@ -1,21 +1,12 @@
 return {
   "https://github.com/onsails/lspkind.nvim.git",
-  "rambhosale/cmp-bootstrap.nvim",
+  -- "rambhosale/cmp-bootstrap.nvim",
   "neovim/nvim-lspconfig",
   "hrsh7th/cmp-nvim-lsp",
   "hrsh7th/cmp-buffer",
   "hrsh7th/cmp-path",
   "hrsh7th/cmp-cmdline",
   "saadparwaiz1/cmp_luasnip",
-  {
-    "roobert/tailwindcss-colorizer-cmp.nvim",
-    -- optionally, override the default options:
-    config = function()
-      require("tailwindcss-colorizer-cmp").setup({
-        color_square_width = 4,
-      })
-    end,
-  },
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -54,10 +45,12 @@ return {
             -- The function below will be called before any actual modifications from lspkind
             -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
             before = function(entry, vim_item)
-              -- ...
+              vim_item.kind = lspkind.presets.default[vim_item.kind]
+              -- end
               vim_item.menu = ({
                 nvim_lsp = "[LSP]",
                 nvim_lua = "[Lua]",
+                luasnip = "[Snippet]",
                 buffer = "[BUF]",
                 cmp_bootstrap = "[󰛆]",
               })[entry.source.name]
