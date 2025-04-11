@@ -1,4 +1,4 @@
--- vim.wo.number = true
+vim.wo.number = true
 vim.wo.relativenumber = true
 vim.opt.mouse = "a"
 vim.opt.encoding = "UTF-8"
@@ -7,9 +7,9 @@ vim.opt.termguicolors = true
 vim.g.mapleader = " "
 
 vim.diagnostic.config({
-	virtual_text = false,
-	underline = true,
-	signs = true,
+  virtual_text = false,
+  underline = true,
+  signs = true,
 })
 
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead

@@ -5,7 +5,7 @@ local keyset = vim.keymap.set
 local M = {
   on_lsp_attach = function(ev)
     vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
-    local opts = { buffer = ev.buf }
+    local opts = { buffer = ev.buf, noremap = true, silent = true }
     keyset("n", "<S-k>", vim.lsp.buf.hover, opts)
     keyset("n", "<leader>a", vim.lsp.buf.code_action, opts)
     keyset("n", "<S-l>", function()
@@ -18,7 +18,13 @@ local M = {
       vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
     end, opts)
     keyset("n", "<leader>u", vim.lsp.buf.signature_help, opts)
+    keyset("n", "gd", function()
+      vim.lsp.buf.references()
+    end, opts)
+    keyset("n", "gD", vim.lsp.buf.declaration, opts)
+    keyset("n", "gd", vim.lsp.buf.definition, opts)
   end,
+
   telescope_opt = function(opt)
     return table.update({
       previewer = false,
