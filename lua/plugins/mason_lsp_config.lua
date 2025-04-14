@@ -1,4 +1,7 @@
 return {
+
+  { "mfussenegger/nvim-jdtls" },
+
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -41,7 +44,7 @@ return {
       local lspconfig = require("lspconfig")
       local cmp_nvim_lsp = require("cmp_nvim_lsp")
       require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls" },
+        ensure_installed = { "lua_ls", "pyright" },
         handlers = {
           function(server_name) -- default handler (optional)
             lspconfig[server_name].setup({
