@@ -67,6 +67,7 @@ local M = {
 }
 keyset("n", "<leader>ss", ":mksession!s.vim<CR>", M.keyargs({ "noremap", "silent" }))
 keyset("n", "<leader>ro", ":e!<CR>", M.keyargs({ "noremap", "silent" }))
+keyset("n", "<leader>w", "<CMD>wshada<BAR>w<CR>", M.keyargs({ "noremap", "silent" }))
 keyset({ "t" }, "<C-n>", "<C-\\><C-n>")
 keyset("x", "<leader>p", [["_dP]])
 keyset("v", "J", ":m '>+1<CR>gv=gv")
@@ -90,7 +91,9 @@ keyset("n", "<A-q>", ":tabprevious<CR>", M.keyargs({ "noremap", "silent" }))
 
 keyset("n", "<leader>fo", function()
   require("conform").format({
-    async = true,
+    lsp_fallback=true,
+    async = false,
+    timeout_ms=500
   })
 end, M.keyargs({ "noremap", "silent", desc = "conform format" }))
 

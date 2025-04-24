@@ -15,6 +15,7 @@ M.shiftwidth = {
   dart = 2,
   css = 2,
   javascript = 2,
+  javascriptreact = 2,
   java = 2,
   ps1 = 2,
   lua = 2,

@@ -1,6 +1,5 @@
-vim.fn.expand("~/AppData/Local/nvim-data/mason/bin/jdtls")
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 local home = vim.fn.expand("~")
 local workspace_path = home .. "/AppData/Local/nvim/jdtls-workspace/"
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
@@ -14,18 +13,13 @@ local extendedClientCapabilities = jdtls.extendedClientCapabilities
 
 local config = {
   cmd = {
-    "C:\\Program Files\\Java\\jdk-21\\bin\\java.exe",
+    "java",
     "-Declipse.application=org.eclipse.jdt.ls.core.id1",
     "-Dosgi.bundles.defaultStartLevel=4",
     "-Declipse.product=org.eclipse.jdt.ls.core.product",
     "-Dlog.protocol=true",
     "-Dlog.level=ALL",
     "-Xmx1g",
-    "--add-modules=ALL-SYSTEM",
-    "--add-opens",
-    "java.base/java.util=ALL-UNNAMED",
-    "--add-opens",
-    "java.base/java.lang=ALL-UNNAMED",
     "-javaagent:" .. home .. "/AppData/Local/nvim-data/mason/packages/jdtls/lombok.jar",
     "-jar",
     vim.fn.glob(home .. "/AppData/Local/nvim-data/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_*.jar"),
@@ -33,6 +27,12 @@ local config = {
     home .. "/AppData/Local/nvim-data/mason/packages/jdtls/config_win",
     "-data",
     workspace_dir,
+    "--add-modules",
+    "ALL-SYSTEM",
+    "--add-opens",
+    "java.base/java.util=ALL-UNNAMED",
+    "--add-opens",
+    "java.base/java.lang=ALL-UNNAMED",
   },
   root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }),
   capabilities = capabilities,
@@ -40,23 +40,23 @@ local config = {
     java = {
       signatureHelp = { enabled = true },
       extendedClientCapabilities = extendedClientCapabilities,
-      maven = {
-        downloadSources = true,
-      },
-      referencesCodeLens = {
-        enabled = true,
-      },
-      references = {
-        includeDecompiledSources = true,
-      },
-      inlayHints = {
-        parameterNames = {
-          enabled = "all", -- literals, all, none
-        },
-      },
-      format = {
-        enabled = false,
-      },
+      -- maven = {
+      --   downloadSources = true,
+      -- },
+      -- referencesCodeLens = {
+      --   enabled = true,
+      -- },
+      -- references = {
+      --   includeDecompiledSources = true,
+      -- },
+      -- inlayHints = {
+      --   parameterNames = {
+      --     enabled = "all", -- literals, all, none
+      --   },
+      -- },
+      -- format = {
+      --   enabled = false,
+      -- },
     },
   },
 

@@ -45,12 +45,18 @@ return {
       local cmp_nvim_lsp = require("cmp_nvim_lsp")
       require("mason-lspconfig").setup({
         ensure_installed = { "lua_ls", "pyright" },
+        -- automatic_installation = {
+        --   exclude = {
+        --     "jdtls",
+        --   },
+        -- },
         handlers = {
           function(server_name) -- default handler (optional)
             lspconfig[server_name].setup({
               capabilities = cmp_nvim_lsp.default_capabilities(),
             })
           end,
+          ["jdtls"] = function() end,
           ["lua_ls"] = function()
             lspconfig.lua_ls.setup({
               capabilities = cmp_nvim_lsp.default_capabilities(),

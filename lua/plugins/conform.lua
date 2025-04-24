@@ -5,16 +5,18 @@ return {
     config = function()
       local conform = require("conform")
       conform.setup({
-        format_on_save = {
-          enabled = false,
-        },
+        -- format_on_save = {
+        --   enabled = false,
+        -- },
         formatters_by_ft = {
           lua = { "stylua" },
           python = { "black" },
           rust = { "rustfmt" },
           html = { "prettier" },
           css = { "prettier" },
+          scss = { "prettier" },
           javascript = { "prettier" },
+          javascriptreact = { "prettier" },
           json = { "prettier" },
           xml = { "xmlformatter" },
           java = { "google-java-format" },
@@ -28,6 +30,11 @@ return {
               "Spaces",
             },
           },
+	  prettier={
+	    "--tab-width ",
+	    vim.PM.g.shiftwidth.javascriptreact,
+	    "--use-tabs false",
+	  }
         },
       })
     end,

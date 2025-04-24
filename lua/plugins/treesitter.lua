@@ -11,7 +11,10 @@ return {
         ensure_installed = { "lua", "javascript", "python", "rust", "java" },
         sync_install = true,
         auto_install = true,
-        highlight = { enable = true },
+        highlight = {
+          enable = true,
+          -- disable = { "java" }, -- List of languages to disable
+        },
         indent = { enable = true },
       })
     end,
